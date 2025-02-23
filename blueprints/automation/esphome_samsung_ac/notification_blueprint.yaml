@@ -1,40 +1,40 @@
 blueprint:
-  name: Samsung AC Error Notification
+  name: Samsung Wärmepumpe Fehlerbenachrichtigungen
   description: >
-    This blueprint monitors a selected sensor for specific error codes from Samsung AC units 
-    and sends notifications to a chosen device with a detailed error message.
+    Dieses Blueprint überwacht einen ausgewählten Sensor auf bestimmte Fehlercodes von Samsung Wärmepump-Geräten 
+    und sendet Benachrichtigungen an ein ausgewähltes Gerät mit einer detaillierten Fehlermeldung.
   domain: automation
   input:
     sensor_entity:
       name: Error Code Sensor
-      description: The sensor that monitors the AC error codes.
+      description: Der Sensor, der die AC-Fehlercodes überwacht.
       selector:
         entity:
           domain: sensor
     
     notify_device:
-      name: Device to notify
-      description: Device needs to run the official Home Assistant app to receive notifications.
+      name: Benachrichtigungsgerät
+      description: Das Gerät muss die offizielle Home Assistant-App ausführen, um Benachrichtigungen zu erhalten.
       selector:
         device:
           integration: mobile_app
     
     is_ios:
-      name: Is it an iOS device?
-      description: Toggle if your selected device runs iOS, default is Android.
+      name: Handelt es sich um ein iOS-Gerät?
+      description: Anwählen, wenn das ausgewählte Gerät unter iOS läuft, Standard ist Android.
       selector:
         boolean:
       default: false
 
     notification_title:
-      name: Notification title (Optional)
-      description: 'Default: "Samsung AC Error Detected"'
-      default: "Samsung AC Error Detected"
+      name: Benachrichtigungstitel (Optional)
+      description: 'Standard: "Samsung Fehlermeldung"'
+      default: "Samsung Fehlermeldung"
       
     notification_message:
-      name: Notification message (Optional)
-      description: 'Default: {{ error_code }} : {{ error_message }}'
-      default: "{{ error_code }} : {{ error_message }}"
+      name: Benachrichtig (Optional)
+      description: 'Standard: {{ error_code }}:\n{{ error_message }}'
+      default: "Fehlercode {{ error_code }}:\n{{ error_message }}"
 
 trigger:
   platform: state
@@ -44,344 +44,344 @@ variables:
   error_code: "{{ states[trigger.entity_id].state }}"
   error_message: >
     {% if error_code == 0 %}
-      All AC units are operating normally. No errors detected.
+      Die Wärmepumpe arbeitet normal. Es wurden keine Fehler festgestellt.
     {% elif error_code == "unavailable" %}
-      The device is currently offline. Please check the connection.
+      Die Wärmepumpe ist offline. Bitte überprüfe die Verbindung.
     {% elif error_code == 101 %}
-      Indoor unit communication error. Indoor unit cannot receive any data from the outdoor unit.
+      Kommunikationsfehler der Inneneinheit. Innengerät kann keine Daten vom Außengerät empfangen.
     {% elif error_code == 102 %}
-      Communication error between indoor unit and outdoor unit. Displayed in indoor unit.
+      Kommunikationsfehler zwischen Innengerät und Außengerät. Wird im Innengerät angezeigt.
     {% elif error_code == 108 %}
-      Error due to repeated address setting (When 2 or more devices have the same address within the system).
+      Fehler durch wiederholte Adresseinstellung (wenn 2 oder mehr Geräte innerhalb des Systems die gleiche Adresse haben).
     {% elif error_code == 110 %}
-      Communication error between Hydro unit HT (Main PBA) and Control kit PBA (Detection from the Control kit).
+      Kommunikationsfehler zwischen dem Hydrogerät HT (Haupt-PBA) und dem PBA des Steuergeräts (Erkennung vom Steuergerät).
     {% elif error_code == 120 %}
-     Short- or open-circuit error of the room temperature sensor of the Zone 2 indoor unit (detected only when the room thermostat is used).
+     Kurzschluss- oder Leerlauffehler des Raumtemperaturfühlers des Innengeräts der Zone 2 (wird nur bei Verwendung des Raumthermostats erkannt).
     {% elif error_code == 121 %}
-      Error on indoor temperature sensor of indoor unit (Short or Open).
+      Fehler am Innentemperatursensor des Innengeräts (Kurzschluss oder offen).
     {% elif error_code == 122 %}
-      Error on EVA IN sensor of indoor unit (Short or Open).
+      Fehler am EVA IN-Sensor des Innengeräts (Kurzschluss oder offen).
     {% elif error_code == 123 %}
-      Error on EVA OUT sensor of indoor unit (Short or Open).
+      Fehler am EVA OUT-Sensor des Innengeräts (Kurzschluss oder offen).
     {% elif error_code == 128 %}
-      EVA IN temperature sensor of indoor unit is detached from EVA IN pipe.
+      Der EVA IN-Temperatursensor des Innengeräts hat sich vom EVA IN-Rohr gelöst.
     {% elif error_code == 129 %}
-      EVA OUT temperature sensor of indoor unit is detached from EVA OUT pipe.
+      Der EVA-OUT-Temperatursensor der Inneneinheit ist vom EVA-OUT-Rohr getrennt.
     {% elif error_code == 130 %}
-      Heat exchanger in/out sensors of indoor unit are detached.
+      Die Wärmeübertrager-Ein-/Ausgangssensoren der Inneneinheit sind getrennt.
     {% elif error_code == 135 %}
-      RPM feedback error of indoor unit's cleaning fan.
+      RPM-Rückmeldungsfehler des Reinigungsventilators der Inneneinheit.
     {% elif error_code == 151 %}
-      Error due to opened EEV of indoor unit (2nd detection).
+      Fehler aufgrund eines geöffneten EEV der Inneneinheit (zweite Erkennung).
     {% elif error_code == 152 %}
-      Error due to closed EEV of indoor unit (2nd detection).
+      Fehler aufgrund eines geschlossenen EEV der Inneneinheit (zweite Erkennung).
     {% elif error_code == 153 %}
-      Error on floating switch of indoor unit (2nd detection).
+      Fehler am Schwimmerschalter der Inneneinheit (zweite Erkennung).
     {% elif error_code == 154 %}
-      RPM feedback error of indoor unit.
+      RPM-Rückmeldungsfehler der Inneneinheit.
     {% elif error_code == 161 %}
-      Mixed operation mode error of indoor unit; When the outdoor unit is getting ready to operate in cooling (or heating) and some of the indoor unit is trying to operate in heating (or cooling) mode.
+      Fehler im gemischten Betriebsmodus der Inneneinheit; wenn die Außeneinheit sich auf den Kühl- (oder Heiz-) Betrieb vorbereitet und einige Inneneinheiten versuchen, im Heiz- (oder Kühl-) Modus zu arbeiten.
     {% elif error_code == 162 %}
-      EEPROM error of MICOM (Physical problem of parts/circuit).
+      EEPROM-Fehler von MICOM (physisches Problem mit Bauteilen/Schaltung).
     {% elif error_code == 163 %}
-      Indoor unit's remote controller option input is incorrect or missing. Outdoor unit EEPROM data error.
+      Die Optionseingabe der Fernbedienung der Inneneinheit ist falsch oder fehlt. Fehler in den EEPROM-Daten der Außeneinheit.
     {% elif error_code == 180 %}
-      Simultaneous opening of cooling/heating MCU SOL V/V (1st detection).
+      Gleichzeitige Öffnung des Kühl-/Heiz-MCU-SOL-Ventils (erste Erkennung).
     {% elif error_code == 181 %}
-      Simultaneous opening of cooling/heating MCU SOL V/V (2nd detection).
+      Gleichzeitige Öffnung des Kühl-/Heiz-MCU-SOL-Ventils (zweite Erkennung).
     {% elif error_code == 185 %}
-      Cross wiring error between communication and power cable of indoor unit.
+      Kreuzverdrahtungsfehler zwischen Kommunikations- und Stromkabel der Inneneinheit.
     {% elif error_code == 186 %}
-      Connection error or problem on SPi.
+      Verbindungsfehler oder Problem mit SPi.
     {% elif error_code == 190 %}
-      No temperature changes in EVA IN during pipe inspection or changes in temperature in the indoor unit with wrong address.
+      Keine Temperaturänderung in EVA IN während der Rohrinspektion oder Temperaturänderung in der Inneneinheit mit falscher Adresse.
     {% elif error_code == 191 %}
-      No temperature changes in EVA OUT during pipe inspection or changes in temperature in the indoor unit with wrong address.
+      Keine Temperaturänderung in EVA OUT während der Rohrinspektion oder Temperaturänderung in der Inneneinheit mit falscher Adresse.
     {% elif error_code == 198 %}
-      Error due to disconnected thermal fuse of indoor unit.
+      Fehler aufgrund einer getrennten Thermosicherung der Inneneinheit.
     {% elif error_code == 201 %}
-      Communication error between indoor and outdoor units (installation number setting error, repeated indoor unit address, indoor unit communication cable error).
+      Kommunikationsfehler zwischen Innen- und Außeneinheiten (Fehler bei der Installationsnummerneinstellung, doppelte Adresse einer Inneneinheit, Kommunikationskabel-Fehler der Inneneinheit).
     {% elif error_code == 202 %}
-      Communication error between indoor and outdoor units (Communication error on all indoor units, outdoor unit communication cable error).
+      Kommunikationsfehler zwischen Innen- und Außeneinheiten (Kommunikationsfehler bei allen Inneneinheiten, Kommunikationskabel-Fehler der Außeneinheit).
     {% elif error_code == 203 %}
-      Communication error between main and sub outdoor units.
+      Kommunikationsfehler zwischen Haupt- und Neben-Außeneinheiten.
     {% elif error_code == 205 %}
-      Communication error on all PBA within the outdoor unit C-Box, communication cable error.
+      Kommunikationsfehler bei allen PBA innerhalb der Außeneinheit C-Box, Kommunikationskabel-Fehler.
     {% elif error_code == 206 %}
-      HUB PBA communication error / FAN PBA communication error / INV1 PBA communication error / INV2 PBA communication error.
+      HUB-PBA-Kommunikationsfehler / FAN-PBA-Kommunikationsfehler / INV1-PBA-Kommunikationsfehler / INV2-PBA-Kommunikationsfehler.
     {% elif error_code == 211 %}
-      When single indoor unit uses 2 MCU ports that are not in series.
+      Wenn eine einzelne Inneneinheit zwei MCU-Ports verwendet, die nicht in Reihe geschaltet sind.
     {% elif error_code == 212 %}
-      If the rotary switch (on the MCU) for address setting of the indoor unit has 3 or more of the same address.
+      Wenn der Drehschalter (am MCU) zur Adressierung der Inneneinheit dreimal oder öfter dieselbe Adresse hat.
     {% elif error_code == 213 %}
-      When total number of indoor units assigned to MCU is the same as the actual number of installed indoor units but there is an indoor unit that is not installed even though it is assigned on MCU.
+      Wenn die Gesamtzahl der Inneneinheiten, die dem MCU zugewiesen sind, der tatsächlichen Anzahl der installierten Inneneinheiten entspricht, aber eine Inneneinheit nicht installiert ist, obwohl sie dem MCU zugewiesen wurde.
     {% elif error_code == 214 %}
-      When the number of MCU is not set correctly on the outdoor unit or when two or more MCUs were installed and some of them have the same address.
+      Wenn die Anzahl der MCU an der Außeneinheit nicht korrekt eingestellt ist oder wenn zwei oder mehr MCUs installiert wurden und einige dieselbe Adresse haben.
     {% elif error_code == 215 %}
-      When two different MCUs have the same address value on the rotary switch.
+      Wenn zwei verschiedene MCUs denselben Adresswert am Drehschalter haben.
     {% elif error_code == 216 %}
-      When the indoor unit is not installed to an MCU port but the switch on the port is set to On.
+      Wenn die Inneneinheit nicht an einen MCU-Port angeschlossen ist, aber der Schalter am Port auf "Ein" gestellt ist.
     {% elif error_code == 217 %}
-      When the indoor unit is connected to an MCU port but the indoor unit is assigned to an MCU and the switch on the port is set to Off.
+      Wenn die Inneneinheit an einen MCU-Port angeschlossen ist, die Inneneinheit jedoch einem MCU zugewiesen ist und der Schalter am Port auf "Aus" gestellt ist.
     {% elif error_code == 218 %}
-      When there’s at least one or more actual number of indoor unit connections compared to the number of indoor units assigned to MCU.
+      Wenn mindestens eine tatsächliche Anzahl von Inneneinheitsverbindungen höher ist als die Anzahl der dem MCU zugewiesenen Inneneinheiten.
     {% elif error_code == 219 %}
-      Error on temperature sensor located on MCU intercooler inlet (Short or Open).
+      Fehler am Temperatursensor des MCU-Ladeluftkühlereinlasses (Kurzschluss oder Unterbrechung).
     {% elif error_code == 220 %}
-      Error on temperature sensor located on MCU intercooler outlet (Short or Open).
+      Fehler am Temperatursensor des MCU-Ladeluftkühlerauslasses (Kurzschluss oder Unterbrechung).
     {% elif error_code == 221 %}
-      Error on outdoor temperature sensor of the outdoor unit (Short or Open).
+      Fehler am Außentemperatursensor der Außeneinheit (Kurzschluss oder Unterbrechung).
     {% elif error_code == 231 %}
-      Error on COND OUT temperature sensor of the main outdoor unit (Short or Open).
+      Fehler am COND-OUT-Temperatursensor der Hauptaußeneinheit (Kurzschluss oder Unterbrechung).
     {% elif error_code == 241 %}
-      COND OUT sensor is detached.
+      COND-OUT-Sensor ist getrennt.
     {% elif error_code == 251 %}
-      Error on discharge temperature sensor of compressor 1 (Short or Open).
+      Fehler am Ausblastemperatursensor von Kompressor 1 (Kurzschluss oder Unterbrechung).
     {% elif error_code == 257 %}
-      Error on discharge temperature sensor of compressor 2 (Short or Open).
+      Fehler am Ausblastemperatursensor von Kompressor 2 (Kurzschluss oder Unterbrechung).
     {% elif error_code == 262 %}
-      Discharge temperature sensor of compressor 1 is detached from the sensor holder on the pipe.
+      Der Ausblastemperatursensor von Kompressor 1 ist vom Sensorhalter am Rohr getrennt.
     {% elif error_code == 263 %}
-      Discharge temperature sensor of compressor 2 is detached from the sensor holder on the pipe.
+      Der Ausblastemperatursensor von Kompressor 2 ist vom Sensorhalter am Rohr getrennt.
     {% elif error_code == 266 %}
-      Top sensor of compressor 1 is detached.
+      Obersensor von Kompressor 1 ist getrennt.
     {% elif error_code == 267 %}
-      Top sensor of compressor 2 is detached.
+      Obersensor von Kompressor 2 ist getrennt.
     {% elif error_code == 269 %}
-      Suction temperature sensor is detached from the sensor holder on the pipe.
+      Der Ansaugtemperatursensor ist vom Sensorhalter am Rohr getrennt.
     {% elif error_code == 276 %}
-      Error on top sensor of compressor 1 (Short or Open).
+      Fehler am Obersensor von Kompressor 1 (Kurzschluss oder Unterbrechung).
     {% elif error_code == 277 %}
-      Error on top sensor of compressor 2 (Short or Open).
+      Fehler am Obersensor von Kompressor 2 (Kurzschluss oder Unterbrechung).
     {% elif error_code == 291 %}
-      Refrigerant leakage or error on high pressure sensor (Short or Open).
+      Kältemittelleckage oder Fehler am Hochdrucksensor (Kurzschluss oder Unterbrechung).
     {% elif error_code == 296 %}
-      Refrigerant leakage or error on low pressure sensor (Short or Open).
+      Kältemittelleckage oder Fehler am Niederdrucksensor (Kurzschluss oder Unterbrechung).
     {% elif error_code == 308 %}
-      Error on suction temperature sensor (Short or Open).
+      Fehler am Ansaugtemperatursensor (Kurzschluss oder Unterbrechung).
     {% elif error_code == 311 %}
-      Error on temperature sensor of double-layer pipe/liquid pipe (sub heat exchanger) (Short or Open).
+      Fehler am Temperatursensor des doppelwandigen Rohrs/Flüssigkeitsrohrs (Sekundärwärmetauscher) (Kurzschluss oder Unterbrechung).
     {% elif error_code == 320 %}
-      OLP sensor error.
+      OLP-Sensorfehler.
     {% elif error_code == 321 %}
-      Error on EVI (ESC) IN temperature sensor (Short or Open).
+      Fehler am EVI (ESC) IN-Temperatursensor (Kurzschluss oder Unterbrechung).
     {% elif error_code == 322 %}
-      Error on EVI (ESC) OUT temperature sensor (Short or Open).
+      Fehler am EVI (ESC) OUT-Temperatursensor (Kurzschluss oder Unterbrechung).
     {% elif error_code == 323 %}
-      Error on suction sensor 2 (Short or Open).
+      Fehler am Ansaugsensor 2 (Kurzschluss oder Unterbrechung).
     {% elif error_code == 346 %}
-      Error due to operation failure of Fan2.
+      Fehler aufgrund eines Betriebsfehlers von Lüfter 2.
     {% elif error_code == 347 %}
-      Motor wire of Fan2 is not connected.
+      Das Motorkabel von Lüfter 2 ist nicht angeschlossen.
     {% elif error_code == 348 %}
-      Lock error on Fan2 of the outdoor unit.
+      Sperrfehler bei Lüfter 2 der Außeneinheit.
     {% elif error_code == 353 %}
-      Error due to overload motor of the outdoor unit's Fan2.
+      Fehler aufgrund einer Überlastung des Motors von Lüfter 2 der Außeneinheit.
     {% elif error_code == 355 %}
-      Error due to overheated IPM of Fan2.
+      Fehler aufgrund einer Überhitzung des IPM von Lüfter 2.
     {% elif error_code == 361 %}
-      Error due to operation failure of inverter compressor 2.
+      Fehler aufgrund eines Betriebsfehlers des Inverter-Kompressors 2.
     {% elif error_code == 364 %}
-      Error due to over-current of inverter compressor 2.
+      Fehler aufgrund eines Überstroms des Inverter-Kompressors 2.
     {% elif error_code == 365 %}
-      V-limit error of inverter compressor 2.
+      V-Grenzwertfehler des Inverter-Kompressors 2.
     {% elif error_code == 366 %}
-      Error due to over-voltage / low voltage of inverter PBA2.
+      Fehler aufgrund von Über- oder Unterspannung der Inverter-PBA2.
     {% elif error_code == 367 %}
-      Error due to unconnected wire of compressor 2.
+      Fehler aufgrund eines nicht angeschlossenen Kabels von Kompressor 2.
     {% elif error_code == 368 %}
-      Output current sensor error of inverter PBA2.
+      Ausgangsstromsensorfehler der Inverter-PBA2.
     {% elif error_code == 369 %}
-      DC voltage sensor error of inverter PBA2.
+      DC-Spannungssensorfehler der Inverter-PBA2.
     {% elif error_code == 374 %}
-      Heat sink temperature sensor error of inverter PBA2.
+      Kühlkörper-Temperatursensorfehler der Inverter-PBA2.
     {% elif error_code == 376 %}
-      Error due to over-current of Fan2.
+      Fehler aufgrund eines Überstroms von Lüfter 2.
     {% elif error_code == 378 %}
-      Error due to input current of inverter 2.
+      Fehler aufgrund des Eingangsstroms des Inverters 2.
     {% elif error_code == 386 %}
-      Over-voltage/low-voltage error of Fan2.
+      Über- oder Unterspannungsfehler von Lüfter 2.
     {% elif error_code == 387 %}
-      Hall IC connection error of Fan2.
+      Hall-IC-Verbindungsfehler von Lüfter 2.
     {% elif error_code == 389 %}
-      V-limit error on Fan2 of compressor.
+      V-Grenzwertfehler bei Lüfter 2 des Kompressors.
     {% elif error_code == 393 %}
-      Output current sensor error of Fan2.
+      Ausgangsstromsensorfehler von Lüfter 2.
     {% elif error_code == 396 %}
-      DC voltage sensor error of Fan2.
+      DC-Spannungssensorfehler von Lüfter 2.
     {% elif error_code == 399 %}
-      Heat sink temperature sensor error of Fan2.
+      Fehler am Kühlkörper-Temperatursensor von Lüfter 2.
     {% elif error_code == 400 %}
-      Error due to overheat caused by contact failure on IPM of Inverter PBA2.
+      Fehler aufgrund von Überhitzung durch Kontaktfehler am IPM der Inverter-PBA2.
     {% elif error_code == 403 %}
-      Detection of OUTDOOR UNIT compressor freezing (During cooling operation).
+      Erkennung des Einfrierens des VERDICHTERS DER AUSSENEINHEIT (Während des Kühlbetriebs).
     {% elif error_code == 404 %}
-      Protection of OUTDOOR UNIT when it is overloaded (during Safety, Start, Normal operation state).
+      Schutz der AUSSENEINHEIT bei Überlastung (während Sicherheits-, Start- oder Normalbetriebszustand).
     {% elif error_code == 407 %}
-      Compressor operation stop due to high pressure protection control.
+      Kompressorbetrieb gestoppt aufgrund der Hochdruckschutzregelung.
     {% elif error_code == 410 %}
-      Compressor operation stop due to low pressure protection control or refrigerant leakage.
+      Kompressorbetrieb gestoppt aufgrund der Niederdruckschutzregelung oder Kältemittelleckage.
     {% elif error_code == 413 %}
-      Compressor operation stop due to discharge temperature protection control.
+      Kompressorbetrieb gestoppt aufgrund der Ausblastemperaturschutzregelung.
     {% elif error_code == 416 %}
-      Discharge of a compressor is overheated.
+      Die Ausblastemperatur eines Kompressors ist überhitzt.
     {% elif error_code == 425 %}
-      Phase reversal or phase failure (3φ outdoor unit wiring, R-S-T-N ), connection error on 3 phase input.
+      Phasenvertauschung oder Phasenausfall (3φ Verdrahtung der Außeneinheit, R-S-T-N), Verbindungsfehler beim Drehstromanschluss.
     {% elif error_code == 428 %}
-      Compressor operation stop due to abnormal compression ratio.
+      Kompressorbetrieb gestoppt aufgrund eines abnormalen Kompressionsverhältnisses.
     {% elif error_code == 438 %}
-      EVI (ESC) EEV leakage or internal leakage of intercooler or incorrect connector insertion of EVI (ESC) EEV.
+      EVI (ESC) EEV-Leckage oder interne Leckage des Zwischenkühlers oder falsches Einstecken des Steckverbinders der EVI (ESC) EEV.
     {% elif error_code == 439 %}
-      Error due to refrigerant leakage.
+      Fehler aufgrund von Kältemittelleckage.
     {% elif error_code == 440 %}
-      Heating mode restriction due to high air temperature.
+      Heizmodus-Einschränkung aufgrund hoher Lufttemperatur.
     {% elif error_code == 441 %}
-      Cooling mode restriction due to low air temperature.
+      Kühlmodus-Einschränkung aufgrund niedriger Lufttemperatur.
     {% elif error_code == 442 %}
-      Refrigerant charging restriction in heating mode when air temperature is over 15 °C.
+      Einschränkung des Kältemittelnachfüllens im Heizmodus, wenn die Lufttemperatur über 15 °C liegt.
     {% elif error_code == 443 %}
-      Operation prohibited due to the pressure drop.
+      Betrieb untersagt aufgrund eines Druckabfalls.
     {% elif error_code == 445 %}
-      CCH is detached.
+      CCH ist getrennt.
     {% elif error_code == 446 %}
-      Error due to operation failure of Fan1.
+      Fehler aufgrund eines Betriebsfehlers von Lüfter 1.
     {% elif error_code == 447 %}
-      Motor wire of Fan1 is not connected.
+      Das Motorkabel von Lüfter 1 ist nicht angeschlossen.
     {% elif error_code == 448 %}
-      Lock error on Fan1.
+      Sperrfehler bei Lüfter 1.
     {% elif error_code == 452 %}
-      Error due to ZPC detection circuit problem or power failure.
+      Fehler aufgrund eines ZPC-Erkennungsstromkreisproblems oder Stromausfalls.
     {% elif error_code == 453 %}
-      Error due to overheated motor of outdoor unit's Fan1.
+      Fehler aufgrund eines überhitzten Motors von Lüfter 1 der Außeneinheit.
     {% elif error_code == 455 %}
-      Error due to overheated IPM of Fan1.
+      Fehler aufgrund einer Überhitzung des IPM von Lüfter 1.
     {% elif error_code == 458 %}
-      OUTDOOR UNIT fan1 error
+      Fehler bei LÜFTER 1 DER AUSSENEINHEIT.
     {% elif error_code == 461 %}
-      Error due to operation failure of inverter compressor 1.
+      Fehler aufgrund eines Betriebsfehlers des Inverter-Kompressors 1.
     {% elif error_code == 462 %}
-      Compressor stop due to full current control or error due to low current on CT2.
+      Kompressor gestoppt aufgrund der vollständigen Stromregelung oder Fehler aufgrund eines niedrigen Stroms an CT2.
     {% elif error_code == 463 %}
-      OLP is overheated.
+      OLP ist überhitzt.
     {% elif error_code == 464 %}
-      Error due to over-current of inverter compressor 1.
+      Fehler aufgrund eines Überstroms des Inverter-Kompressors 1.
     {% elif error_code == 465 %}
-      V-limit error of inverter compressor 1.
+      V-Grenzwertfehler des Inverter-Kompressors 1.
     {% elif error_code == 466 %}
-      Error due to over voltage / low voltage of inverter PBA1.
+      Fehler aufgrund von Über- oder Unterspannung der Inverter-PBA1.
     {% elif error_code == 467 %}
-      Error due to unconnected wire of compressor 1.
+      Fehler aufgrund eines nicht angeschlossenen Kabels von Kompressor 1.
     {% elif error_code == 468 %}
-      Output current sensor error of inverter PBA1.
+      Ausgangsstromsensorfehler der Inverter-PBA1.
     {% elif error_code == 469 %}
-      DC voltage sensor error of inverter PBA1.
+      DC-Spannungssensorfehler der Inverter-PBA1.
     {% elif error_code == 470 %}
-      Outdoor unit EEPROM Read/Write Error.
+      EEPROM Lese-/Schreibfehler der Außeneinheit.
     {% elif error_code == 471 %}
-      Outdoor unit EEPROM Read/Write Error (OTP error).
+      EEPROM Lese-/Schreibfehler der Außeneinheit (OTP-Fehler).
     {% elif error_code == 474 %}
-      Heat sink temperature sensor error of inverter PBA1.
+      Kühlkörper-Temperatursensorfehler der Inverter-PBA1.
     {% elif error_code == 475 %}
-      OUTDOOR UNIT fan2 error.
+      Fehler bei LÜFTER 2 DER AUSSENEINHEIT.
     {% elif error_code == 478 %}
-      Error due to overcurrent of Fan1.
+      Fehler aufgrund eines Überstroms von Lüfter 1.
     {% elif error_code == 482 %}
-      Error due to input current of inverter 1.
+      Fehler aufgrund des Eingangsstroms des Inverters 1.
     {% elif error_code == 484 %}
-      PFC Overload Error.
+      PFC-Überlastfehler.
     {% elif error_code == 485 %}
-      Input current sensor error.
+      Eingangsstromsensorfehler.
     {% elif error_code == 486 %}
-      Error due to over voltage / low voltage of Fan1.
+      Fehler aufgrund von Über- oder Unterspannung von Lüfter 1.
     {% elif error_code == 487 %}
-      Hall IC error of Fan1.
+      Hall-IC-Fehler von Lüfter 1.
     {% elif error_code == 489 %}
-      V-limit error on Fan1 of compressor.
+      V-Grenzwertfehler bei Lüfter 1 des Kompressors.
     {% elif error_code == 493 %}
-      Output current sensor error of Fan1.
+      Ausgangsstromsensorfehler von Lüfter 1.
     {% elif error_code == 496 %}
-      DC voltage sensor error of Fan1.
+      DC-Spannungssensorfehler von Lüfter 1.
     {% elif error_code == 499 %}
-      Heat sink temperature sensor error of Fan1.
+      Kühlkörper-Temperatursensorfehler von Lüfter 1.
     {% elif error_code == 500 %}
-      Error due to overheat caused by contact failure on IPM of Inverter PBA1.
+      Fehler aufgrund von Überhitzung durch Kontaktfehler am IPM der Inverter-PBA1.
     {% elif error_code == 503 %}
-      Error due to alert the user to check if the service valve is closed.
+      Fehler zur Warnung des Benutzers, ob das Serviceventil geschlossen ist.
     {% elif error_code == 504 %}
-      Error due to self-diagnosis of compressor operation.
+      Fehler aufgrund der Selbstdiagnose des Kompressorbetriebs.
     {% elif error_code == 505 %}
-      Error due to self-diagnosis of high pressure sensor.
+      Fehler aufgrund der Selbstdiagnose des Hochdrucksensors.
     {% elif error_code == 506 %}
-      Error due to self-diagnosis of low pressure sensor.
+      Fehler aufgrund der Selbstdiagnose des Niederdrucksensors.
     {% elif error_code == 554 %}
-      Gas leak error.
+      Fehler aufgrund eines Gaslecks.
     {% elif error_code == 560 %}
-      Outdoor unit's option switch setting error (when inappropriate option switch is on).
+      Fehler bei der Einstellung des Optionsschalters der Außeneinheit (wenn ein ungeeigneter Optionsschalter eingeschaltet ist).
     {% elif error_code == 563 %}
-      Error due to module installation of indoor unit with old version (Micom version needs to be updated).
+      Fehler aufgrund der Modulinstallation einer Inneneinheit mit alter Version (Micom-Version muss aktualisiert werden).
     {% elif error_code == 573 %}
-      Error due to using single type outdoor unit in a module installation.
+      Fehler durch Verwendung einer Einzel-Außeneinheit in einer Modulinstallation.
     {% elif error_code == 601 %}
-      Communication error between remote controller and the DVM Hydro unit / Hydro unit HT.
+      Kommunikationsfehler zwischen Fernbedienung und der DVM-Hydroeinheit / Hydroeinheit HT.
     {% elif error_code == 602 %}
-      Communication error between master and slave remote controller.
+      Kommunikationsfehler zwischen der Master- und Slave-Fernbedienung.
     {% elif error_code == 604 %}
-      Tracking error between remote controller and the DVM Hydro unit / Hydro unit HT.
+      Verfolgungsfehler zwischen Fernbedienung und der DVM-Hydroeinheit / Hydroeinheit HT.
     {% elif error_code == 607 %}
-      Communication error between the Master and Slave wired remote controllers.
+      Kommunikationsfehler zwischen den verkabelten Master- und Slave-Fernbedienungen.
     {% elif error_code == 618 %}
-      Error due to exceeding maximum numbers of Hydro unit installation (16 units).
+      Fehler aufgrund der Überschreitung der maximalen Anzahl an installierten Hydroeinheiten (16 Einheiten).
     {% elif error_code == 627 %}
-      Error due to exceeding maximum numbers of wired remote controller installation (2 units).
+      Fehler aufgrund der Überschreitung der maximalen Anzahl an installierten verkabelten Fernbedienungen (2 Einheiten).
     {% elif error_code == 633 %}
-      Error caused by installing mixed models.
+      Fehler durch die Installation gemischter Modelle.
     {% elif error_code == 635 %}
-      Remote controller's temperature sensor is disconnected or has a problem.
+      Der Temperatursensor der Fernbedienung ist nicht angeschlossen oder defekt.
     {% elif error_code == 654 %}
-      Data error on remote controller (Memory read/write error).
+      Datenfehler an der Fernbedienung (Speicher-Lese-/Schreibfehler).
     {% elif error_code == 702 %}
-      Error due to closed EEV of indoor unit (1st detection).
+      Fehler aufgrund eines geschlossenen EEV der Inneneinheit (Erste Erkennung).
     {% elif error_code == 703 %}
-      Error due to opened EEV of indoor unit (1st detection).
+      Fehler aufgrund eines geöffneten EEV der Inneneinheit (Erste Erkennung).
     {% elif error_code == 899 %}
-      Short- or open-circuit error of the Zone 1 water-out temperature sensor.
+      Kurzschluss oder Unterbrechung des Temperaturfühlers für den Wasseraustritt in Zone 1.
     {% elif error_code == 900 %}
-      Short- or open-circuit error of the Zone 2 water-out temperature sensor.
+      Kurzschluss oder Unterbrechung des Temperaturfühlers für den Wasseraustritt in Zone 2.
     {% elif error_code == 901 %}
-      Error on the sensor of water inlet pipe (Short or Open).
+      Fehler am Sensor des Wassereinlassrohrs (Kurzschluss oder Unterbrechung).
     {% elif error_code == 902 %}
-      Error on the sensor of water outlet pipe (Short or Open).
+      Fehler am Sensor des Wasserauslassrohrs (Kurzschluss oder Unterbrechung).
     {% elif error_code == 903 %}
-      Water outlet (backup heater) temperature sensor error.
+      Fehler am Temperaturfühler für den Wasserauslass (Backup-Heizung).
     {% elif error_code == 904 %}
-      Error on water tank (Short or open).
+      Fehler am Wassertanksensor (Kurzschluss oder Unterbrechung).
     {% elif error_code == 906 %}
-      Outdoor evaporator inlet temperature sensor (open/short).
+      Fehler am Temperatursensor des Verdampfer-Einlasses der Außeneinheit (Kurzschluss oder Unterbrechung).
     {% elif error_code == 907 %}
-      Error due to pipe rupture protection.
+      Fehler aufgrund des Rohrbruchschutzes.
     {% elif error_code == 908 %}
-      Error due to freeze prevention (Re-operation is possible).
+      Fehler aufgrund des Frostschutzes (Wiederbetrieb möglich).
     {% elif error_code == 909 %}
-      Error due to freeze prevention (Re-operation is impossible).
+      Fehler aufgrund des Frostschutzes (Wiederbetrieb nicht möglich).
     {% elif error_code == 910 %}
-      Water temperature sensor on water outlet pipe is detached.
+      Der Wassertemperatursensor am Wasserauslassrohr ist abgetrennt.
     {% elif error_code == 911 %}
-      Flow switch off error, when the switch is turned off within 10 seconds after a pump starts its operation (Re-operation is possible).
+      Durchfluss-Schalterfehler, wenn der Schalter innerhalb von 10 Sekunden nach dem Start der Pumpe ausgeschaltet wird (Wiederbetrieb möglich).
     {% elif error_code == 912 %}
-      Normal flow rate error.
+      Fehler der normalen Durchflussrate.
     {% elif error_code == 913 %}
-      Six times detection for Flow Switch Error (Re-operation is not possible).
+      Sechsmalige Erkennung eines Durchfluss-Schalterfehlers (Wiederbetrieb nicht möglich).
     {% elif error_code == 914 %}
-      Error due to incorrect thermostat connection.
+      Fehler aufgrund einer falschen Thermostatverbindung.
     {% elif error_code == 915 %}
-      Error on DC fan (Non-operating).
+      Fehler am DC-Lüfter (nicht in Betrieb).
     {% elif error_code == 916 %}
-      Mixing valve temperature sensor (open/short).
+      Fehler am Temperatursensor des Mischventils (Kurzschluss oder Unterbrechung).
     {% elif error_code == 919 %}
-      Set temperature for disinfection operation not reached, or, after reaching the temperature, failed to continue for the requested time.
+      Die eingestellte Temperatur für den Desinfektionsbetrieb wurde nicht erreicht oder konnte nach Erreichen nicht für die erforderliche Zeit gehalten werden.
     {% elif error_code == "unknown" %}
     {% else %}
-      Unknown error code: {{ error_code }}. Please refer to the AC unit's manual.
+      Unbekannter Fehlercode: {{ error_code }}. Bitte konsultieren Sie das Handbuch der Klimaanlage.
     {% endif %}
   is_ios: !input is_ios
   notification_title: !input notification_title
