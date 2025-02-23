@@ -6,7 +6,7 @@ blueprint:
   domain: automation
   input:
     sensor_entity:
-      name: Error Code Sensor
+      name: Fehlercode Sensor
       description: Der Sensor, der die AC-Fehlercodes überwacht.
       selector:
         entity:
