@@ -44,9 +44,9 @@ variables:
   error_code: "{{ states[trigger.entity_id].state }}"
   error_message: >
     {% if error_code == 0 %}
-      Die Wärmepumpe arbeitet normal. Es wurden keine Fehler festgestellt.
+      Die Wärmepumpe arbeitet normal.
     {% elif error_code == "unavailable" %}
-      Die Wärmepumpe ist offline. Bitte überprüfe die Verbindung.
+      Die Wärmepumpe ist offline.
     {% elif error_code == 101 %}
       Kommunikationsfehler der Inneneinheit. Innengerät kann keine Daten vom Außengerät empfangen.
     {% elif error_code == 102 %}
