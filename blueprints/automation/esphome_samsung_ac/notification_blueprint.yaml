@@ -39,7 +39,7 @@ blueprint:
 trigger:
   platform: state
   entity_id: !input sensor_entity
-  for: "00:01:30"
+  for: "00:00:45"
 
 variables:
   error_code: "{{ states[trigger.entity_id].state }}"
